@@ -241,7 +241,7 @@ config = {
     <link rel="prefetch" href="https://pygame-web.github.io/archives/0.9/vt/xterm.js">
     <link rel="prefetch" href="https://pygame-web.github.io/archives/0.9/vt/xterm-addon-image.js">
     <link rel="prefetch" href="https://pygame-web.github.io/archives/0.9/vt/xterm-addon-image.js">
-    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <link rel="icon" type="image/x-icon" href="icon.png">
     <style>
         #status {
             display: inline-block;
@@ -323,7 +323,7 @@ config = {
 </head>
 
 <body>
-    <div id="transfer" align=center>
+    <div id="transfer">
 <!--        <div class="spinner" id='spinner'></div> -->
         <div class="emscripten" id="status">Downloading...</div>
         <div class="emscripten">
@@ -350,7 +350,7 @@ config = {
             <div id="level">(battery level unknown)</div>
             <div id="stateBattery">(charging state unknown)</div>
         </div>
-        <div id="box" class="emscripten_border" hidden="true">
+        <div id="box" class="emscripten_border" hidden="hidden">
             <div id="info" class="trinfo"></div>
             <iframe id="iframe" class="framed" name="iframe"
                 width="470px" height="90%"
@@ -358,8 +358,7 @@ config = {
                 style="z-index: 10; background: #FFFFFF;"
                 sandbox="allow-same-origin allow-top-navigation allow-scripts allow-pointer-lock"
                 allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated"
-                src="https://pygame-web.github.io/archives/0.9/empty.html"
-                scrolling="no">
+                src="https://pygame-web.github.io/archives/0.9/empty.html">
             </iframe>
         </div>
     </div>
@@ -368,7 +367,7 @@ config = {
         <label for="dlg_multifile">Select files</label>
     </div>
     <div id="pyconsole">
-        <div id="terminal" tabIndex=1 align="left"></div>
+        <div id="terminal" tabIndex=1></div>
     </div>
     <script type="application/javascript">
     async function custom_onload(debug_hidden) {
