@@ -55,21 +55,45 @@
         background-color: #DDDD00;
         color: #DD00DD;
         }
+
+        .video-container {
+            position: relative;
+            bottom: -30px;
+            width: 100%;
+            max-width: 500px;
+            display: inline-block;
+        }
+
+        .video-label {
+            position: absolute;
+            left: 0;
+            color: white;
+            padding: 5px 10px;
+            font-size: 20px;
+        }
     </style>
     <title>Projects</title>
 </head>
 <body>
 <ul>
-    <li class="navbar-item-container"><a class="active navbar-item" href="./">Home</a></li>
+    <li class="navbar-item-container"><a class="navbar-item" href="./">Home</a></li>
     <li class="navbar-item-container"><a class="navbar-item" href="./projects.html">Projects</a></li>
-    <li class="navbar-item-container"><a class="navbar-item" href="./movies.html">Movies</a></li>
+    <li class="navbar-item-container"><a class="active navbar-item" href="./movies.html">Movies</a></li>
 </ul>
 <br>
 <br>
 <br>
-<video width="500" height="500" controls>
-    <source src="movie1.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
+<figure class="video-container">
+    <video width="500" height="500" controls>
+        <source src="movie1.mp4" type="video/mp4">
+    </video>
+    <figcaption class="video-label">Sword of Summmer Book Trailer</figcaption>
+</figure>
+<figure class="video-container">
+    <video width="500" height="500" controls>
+        <source src="movie2.mp4" type="video/mp4">
+    </video>
+    <figcaption class="video-label">AHHHHHHHH! SCREAMING!</figcaption>
+</figure>
 </body>
 </html>
