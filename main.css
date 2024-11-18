@@ -7,6 +7,10 @@
 
 .navbar-item-container {
     list-style-type: none;
+    float: right;
+}
+
+.left {
     float: left;
 }
 
@@ -23,11 +27,11 @@
 }
 
 body {
-    background-color: #111111;
+    background-image: url("/background.png");
 }
 
 .active {
-    background-color: #222222;
+    background-color: #555555;
 }
 
 .link {
@@ -66,4 +70,8 @@ body {
     color: white;
     padding: 5px 10px;
     font-size: 20px;
+}
+
+@font-face {
+    src: url(/SourceCodePro.ttf);
 }
