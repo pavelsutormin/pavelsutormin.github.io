@@ -1,0 +1,47 @@
+body {
+    background: url('https://riversun.github.io/img/yosemite.jpg') 100% repeat fixed;
+    background-size: cover;
+    margin: 8px;
+    display: block;
+    font-weight: lighter;
+    font-size: 16px;
+    color: #666666;
+}
+
+#toolbar {
+    filter: blur(6px);
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+}
+
+.btn {
+    display: inline-block;
+    line-height: 30px;
+    color: #FFF;
+    text-decoration: none;
+    text-align: center;
+    background-color: #28a745;
+    border-radius: 5px;
+    border-width: 0px;
+    margin: 5px;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.btn:hover {
+    background-color: #218d3a;
+}
+
+.btn:active {
+    position: relative;
+    top: 1px;
+    left: 2px;
+}
+
+.btn:focus {
+    outline: none;
+}

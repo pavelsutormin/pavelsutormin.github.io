@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 .navbar {
-    margin: 0;
-    padding: 0;
     overflow: hidden;
     background-color: #333333;
+    opacity: .5;
+    backdrop-filter: blur(2px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
 }
 
 .navbar-item-container {
@@ -20,6 +27,7 @@
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    transition: background-color 0.25s;
 }
 
 .navbar-item:hover {
@@ -27,7 +35,12 @@
 }
 
 body {
-    background-image: url("/background.png");
+    background-color: #242424;
+    font-family: "Source Code Pro", monospace;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    padding-bottom: 100px
 }
 
 .active {
@@ -36,6 +49,7 @@ body {
 
 .link {
     color: white;
+    transition: color 0.25s;
 }
 
 .link:hover {
@@ -46,14 +60,12 @@ body {
     color: white;
 }
 
-.link::selection {
-    background-color: #DDDD00;
-    color: #DD00DD;
+::-moz-selection {
+    background: #00AA77;
 }
 
-.text::selection {
-    background-color: #DDDD00;
-    color: #DD00DD;
+::selection {
+    background: #00AA77;
 }
 
 .video-container {
@@ -72,6 +84,32 @@ body {
     font-size: 20px;
 }
 
-@font-face {
-    src: url(/SourceCodePro.ttf);
+button {
+    border-radius: 8px;
+    border: 2px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    background-color: #404040;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+    outline: 0;
+}
+
+.count {
+    font-size: 2em;
+    font-weight: 500;
+}
+
+.center {
+    margin: 0;
+    place-items: center;
 }
