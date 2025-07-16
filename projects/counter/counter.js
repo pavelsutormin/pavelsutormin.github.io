@@ -3,40 +3,26 @@ window.onload = function(e) {
     const counterAdd = document.getElementById('counter-add');
     const counterSub = document.getElementById('counter-sub');
 
-    const firebaseConfig = {
-        databaseURL: "https://pasha-website-default-rtdb.firebaseio.com",
-        projectId: "pasha-website",
-        storageBucket: "pasha-website.firebasestorage.app",
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-    const countRef = database.ref('count');
-
     let count = 0;
 
-    function setCounter(new_count) {
-        count = new_count;
+    function changeCount(newCount) {
+        count = newCount;
         countElem.innerHTML = `count is ${count}`;
+    }
 
-        countRef.set(count);
-    };
+    function addCount() {
+        fetch("https://api-sutormin-org-jrkz.onrender.com/count/add");
+    }
 
-    function setError(error) {
-        countElem.innerHTML = `<p style="color: red;">${error}</p>`;
+    function subCount() {
+        fetch("https://api-sutormin-org-jrkz.onrender.com/count/add");
     }
 
     counterAdd.addEventListener('click', () => setCounter(count + 1));
     counterSub.addEventListener('click', () => setCounter(count - 1));
-
-    countRef.on('value', (snapshot) => {
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            setCounter(data);
-        } else {
-            setError("No data available");
-        }
-    }, (error) => {
-        setError(`Error fetching data: ${error}`);
+    
+    var socket = io();
+    socket.on('count_changed', (newCount) => {
+        changeCount(newCount);
     });
 }
