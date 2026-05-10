@@ -1,0 +1,74 @@
+.open-sans-<uniquifier> {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+#gameCanvas {
+  border: 2px solid #555555;
+}
+
+#controls {
+  align-items: start;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+#floatingBrick {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.floatingBrickSrc {
+  margin-top: 10px;
+  margin-right: 10px;
+  width: 48px;
+  height: 48px;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #232323;
+}
+
+button {
+  width: 110px;
+  height: 35px;
+  background-color: #232323;
+  border: 2px solid #555555;
+  margin-top: 10px;
+  user-select: none;
+  vertical-align: middle;
+}
+
+button:hover {
+  background-color: #333333;
+}
+
+input[type="text"] {
+  width: 110px;
+  height: 35px;
+  background-color: #232323;
+  border: 2px solid #555555;
+  margin-top: 10px;
+  outline: none;
+  vertical-align: middle;
+}
+
+input[type="text"]:hover {
+  background-color: #333333;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  color: #F6F254;
+}
