@@ -84,6 +84,13 @@ body {
     font-size: 20px;
 }
 
+.image-label {
+    left: 0;
+    color: white;
+    padding: 5px 10px;
+    font-size: 20px;
+}
+
 button {
     border-radius: 8px;
     border: 2px solid transparent;

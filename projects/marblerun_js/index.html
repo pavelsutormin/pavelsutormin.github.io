@@ -6,8 +6,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/1.4.2/planck.min.js" integrity="sha512-Gy1Junbk8YDdxu//HOwLb7r1/swPd0qaWiS2RWn5l8Dm74iMSpsOgR3xYP/MpOmgp7qGr0+li1TRKIbTeQB9wg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="/favicon.png" rel="icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/1.4.2/planck.min.js" integrity="sha512-Gy1Junbk8YDdxu//HOwLb7r1/swPd0qaWiS2RWn5l8Dm74iMSpsOgR3xYP/MpOmgp7qGr0+li1TRKIbTeQB9wg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
     <title>Marblerun</title>
   </head>
   <body>
@@ -21,6 +24,8 @@
       <br>
       <button id="buttonExport">Export</button>
       <button id="buttonImport">Import</button>
+      <br>
+      <button id="buttonPublish" style="width: 224px;">Publish</button>
       <br>
       <input id="inputMarblerunAt" type="text" placeholder="Level Id" style="height: 50px;"></input>
       <button id="buttonMarblerunAt" style="height: 50px;">Load from marblerun.at</button>

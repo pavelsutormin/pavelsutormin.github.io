@@ -260,3 +260,29 @@ async function loadFromMarblerunAt(trackId) {
   const data = await res.json();
   return marblerunAtConvert(Object.values(data.track.json.bricks));
 }
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDpd5UGaLwWoa6YPDvgip2P6k1KvWTSHno",
+  authDomain: "sutormin-org.firebaseapp.com",
+  projectId: "sutormin-org",
+  storageBucket: "sutormin-org.firebasestorage.app",
+  messagingSenderId: "545602955870",
+  appId: "1:545602955870:web:71a68ca48c92fdb381e2cf"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore(app);
+const collection = db.collection("marblerun");
+
+async function publishData(name, data) {
+  collection.add({
+    name: name,
+    data: data,
+    timestamp: new Date()
+  }).then((docRef) => {
+    console.log("Document written with ID: ", docRef.id);
+    return docRef.id;
+  }).catch((error) => {
+    console.error("Error adding document: ", error);
+  });
+}

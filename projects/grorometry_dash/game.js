@@ -127,9 +127,6 @@ function update(time) {
         }
     }
     
-    // 4. Move using the AVERAGE of start and end velocity (Trapezoidal / Verlet Integration)
-    // This restores your missing jump height!
-    player.y += ((startVy + player.vy) / 2) * dt;
     
     let landedThisFrame = false;
 

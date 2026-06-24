@@ -48,6 +48,7 @@ function drawBricks() {
 }
 
 function drawSelect() {
+  if (!(mouseX >= 0 && mouseX < fieldWidth && mouseY >= 0 && mouseY < fieldHeight)) return;
   ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
   ctx.fillRect(mouseX * cellSize, mouseY * cellSize, cellSize + 1, cellSize + 1);
 }
@@ -65,10 +66,8 @@ function brickPut() {
     if (mouseX >= 0 && mouseX < fieldWidth && mouseY >= 0 && mouseY < fieldHeight) {
       for (let i = 0; i < bricks.length; i++) {
         if (bricks[i].x == mouseX && bricks[i].y == mouseY) {
-          bricks[selectedBrick].visible = true;
-          selectedBrick = null;
-          floatingBrick.style.visibility = "hidden";
-          return;
+          //bricks.splice(i, 1);
+          break;
         }
       }
       lastPlaced = bricks[selectedBrick].type;
@@ -265,6 +264,19 @@ document.getElementById("buttonImport").addEventListener('click', (event) => {
     draw();
 });
 
+document.getElementById("buttonPublish").addEventListener('click', (event) => {
+  let name = prompt("Enter name of track: (empty for no name)");
+  if (name != null) name = name.trim();
+  if (name === '') name = null;
+  let track = [];
+  for (let i = 0; i < bricks.length; i++) {
+    let b = bricks[i];
+    track.push({x: b.x, y: b.y, type: b.type, rad: b.rad});
+  }
+  publishData(name, JSON.stringify(track));
+  draw();
+});
+
 document.getElementById("buttonMarblerunAt").addEventListener('click', (event) => {
   let id = document.getElementById("inputMarblerunAt").value;
   if (id.trim() !== '' && !isNaN(Number(id))) {
@@ -320,5 +332,41 @@ document.getElementById("floatingBrickSrc3").addEventListener('mousedown', (even
   }
 });
 
-initPlanck();
-draw();
+document.addEventListener('DOMContentLoaded', (event) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  let track = null;
+  if (urlParams.has('firestoreId')) {
+    collection.doc(urlParams.get('firestoreId'))
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          console.log(doc.data().data)
+          track = JSON.parse(doc.data().data);
+          bricks = [];
+          for (let i = 0; i < track.length; i++) {
+            let t = track[i];
+            bricks.push(new Brick(t.x, t.y, t.type, t.rad));
+          }
+          initPlanck();
+          draw();
+        } else {
+          console.log("No such document found!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting document:", error);
+      });
+    return;
+  }
+  track = localStorage.getItem('track');
+  if (track != null) {
+    track = JSON.parse(track);
+    bricks = [];
+    for (let i = 0; i < track.length; i++) {
+      let t = track[i];
+      bricks.push(new Brick(t.x, t.y, t.type, t.rad));
+    }
+    initPlanck();
+    draw();
+  }
+});
