@@ -1,50 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mablerun JS</title>
+    <link class="favicon" rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="style.css">
-    <link href="/favicon.png" rel="icon">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/1.4.2/planck.min.js" integrity="sha512-Gy1Junbk8YDdxu//HOwLb7r1/swPd0qaWiS2RWn5l8Dm74iMSpsOgR3xYP/MpOmgp7qGr0+li1TRKIbTeQB9wg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/1.4.2/planck.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <title>Marblerun</title>
   </head>
   <body>
-    <canvas id="gameCanvas" oncontextmenu="return false;"></canvas>
-    <div id="controls">
-      <button id="buttonRun">Run</button>
-      <button id="buttonClear">Clear</button>
+    <script src="/navbar.js"></script>
+    <div class="content">
+      <h1>Marblerun JS</h1>
       <br>
-      <button id="buttonSave">Save</button>
-      <button id="buttonLoad">Load</button>
       <br>
-      <button id="buttonExport">Export</button>
-      <button id="buttonImport">Import</button>
+      <canvas id="gameCanvas" oncontextmenu="return false;"></canvas>
+      <div id="controls">
+        <button id="buttonRun">Run</button>
+        <button id="buttonClear">Clear</button>
+        <br>
+        <button id="buttonSave">Save</button>
+        <button id="buttonLoad">Load</button>
+        <br>
+        <button id="buttonExport">Export</button>
+        <button id="buttonImport">Import</button>
+        <br>
+        <button id="buttonPublish" style="width: 224px;">Publish</button>
+        <br>
+        <input id="inputMarblerunAt" type="text" placeholder="Level Id" style="height: 50px;"></input>
+        <button id="buttonMarblerunAt" style="height: 50px;">Load from marblerun.at</button>
+        <br>
+        <canvas id="floatingBrickSrc0" class="floatingBrickSrc"></canvas>
+        <canvas id="floatingBrickSrc1" class="floatingBrickSrc"></canvas>
+        <canvas id="floatingBrickSrc2" class="floatingBrickSrc"></canvas>
+        <br>
+        <canvas id="floatingBrickSrc3" class="floatingBrickSrc"></canvas>
+        <canvas id="floatingBrickSrc4" class="floatingBrickSrc"></canvas>
+        <canvas id="floatingBrickSrc5" class="floatingBrickSrc"></canvas>
+        <br>
+        <canvas id="floatingBrickSrc6" class="floatingBrickSrc"></canvas>
+        <canvas id="floatingBrickSrc7" class="floatingBrickSrc"></canvas>
+        <canvas id="floatingBrickSrc8" class="floatingBrickSrc"></canvas>
+      </div>
       <br>
-      <button id="buttonPublish" style="width: 224px;">Publish</button>
-      <br>
-      <input id="inputMarblerunAt" type="text" placeholder="Level Id" style="height: 50px;"></input>
-      <button id="buttonMarblerunAt" style="height: 50px;">Load from marblerun.at</button>
-      <br>
-      <canvas id="floatingBrickSrc0" class="floatingBrickSrc"></canvas>
-      <canvas id="floatingBrickSrc1" class="floatingBrickSrc"></canvas>
-      <canvas id="floatingBrickSrc2" class="floatingBrickSrc"></canvas>
-      <br>
-      <canvas id="floatingBrickSrc3" class="floatingBrickSrc"></canvas>
-      <canvas id="floatingBrickSrc4" class="floatingBrickSrc"></canvas>
-      <canvas id="floatingBrickSrc5" class="floatingBrickSrc"></canvas>
-      <br>
-      <canvas id="floatingBrickSrc6" class="floatingBrickSrc"></canvas>
-      <canvas id="floatingBrickSrc7" class="floatingBrickSrc"></canvas>
-      <canvas id="floatingBrickSrc8" class="floatingBrickSrc"></canvas>
+      <p style="font-size: 22; display: block;">Elapsed time: <span id="totalTime">0.00</span></p>
+      <canvas id="floatingBrick" style="visibility: hidden;"></canvas>
     </div>
-    <br>
-    <p style="font-size: 22;">Elapsed time: <span id="totalTime">0.00</span></p>
-    <canvas id="floatingBrick" style="visibility: hidden;"></canvas>
     <script src="utils.js"></script>
     <script src="draw.js"></script>
     <script src="phys.js"></script>

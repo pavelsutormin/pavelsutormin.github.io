@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link href="/favicon.png" rel="icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mablerun List</title>
+    <link class="favicon" rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="/style.css">
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <title>Marblerun</title>
   </head>
   <body>
-    <ul id="levelList"></ul>
+    <script src="/navbar.js"></script>
+    <div class="content">
+      <h1>List of all Marblerun levels uplaoded (latest at the top)</h1>
+      <br>
+      <br>
+      <ol id="levelList" class="o-list">Loading...</ol>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>

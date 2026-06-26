@@ -211,11 +211,7 @@ document.getElementById("buttonClear").addEventListener('click', (event) => {
 });
 
 document.getElementById("buttonSave").addEventListener('click', (event) => {
-  let track = [];
-  for (let i = 0; i < bricks.length; i++) {
-    let b = bricks[i];
-    track.push({x: b.x, y: b.y, type: b.type, rad: b.rad});
-  }
+  let track = saveTrack();
   localStorage.setItem('track', JSON.stringify(track));
   draw();
 });
@@ -227,34 +223,22 @@ document.getElementById("buttonLoad").addEventListener('click', (event) => {
     return;
   }
   track = JSON.parse(track);
-  bricks = [];
-  for (let i = 0; i < track.length; i++) {
-    let t = track[i];
-    bricks.push(new Brick(t.x, t.y, t.type, t.rad));
-  }
+  loadTrack(track);
   initPlanck();
   draw();
 });
 
 document.getElementById("buttonExport").addEventListener('click', (event) => {
-  let track = [];
-  for (let i = 0; i < bricks.length; i++) {
-    let b = bricks[i];
-    track.push({x: b.x, y: b.y, type: b.type, rad: b.rad});
-  }
+  let track = saveTrack();
   downloadData(JSON.stringify(track), "track.json");
   draw();
 });
 
 document.getElementById("buttonImport").addEventListener('click', (event) => {
   openClassicPicker()
-    .then((track) => {
-      track = JSON.parse(track);
-      bricks = [];
-      for (let i = 0; i < track.length; i++) {
-        let t = track[i];
-        bricks.push(new Brick(t.x, t.y, t.type, t.rad));
-      }
+    .then((trackStr) => {
+      trackStr = JSON.parse(track);
+      loadTrack(track);
       initPlanck();
       draw();
     })
@@ -332,41 +316,31 @@ document.getElementById("floatingBrickSrc3").addEventListener('mousedown', (even
   }
 });
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
-  let track = null;
-  if (urlParams.has('firestoreId')) {
-    collection.doc(urlParams.get('firestoreId'))
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          console.log(doc.data().data)
-          track = JSON.parse(doc.data().data);
-          bricks = [];
-          for (let i = 0; i < track.length; i++) {
-            let t = track[i];
-            bricks.push(new Brick(t.x, t.y, t.type, t.rad));
-          }
-          initPlanck();
-          draw();
-        } else {
-          console.log("No such document found!");
-        }
-      })
-      .catch((error) => {
-        console.error("Error getting document:", error);
-      });
-    return;
-  }
-  track = localStorage.getItem('track');
-  if (track != null) {
-    track = JSON.parse(track);
-    bricks = [];
-    for (let i = 0; i < track.length; i++) {
-      let t = track[i];
-      bricks.push(new Brick(t.x, t.y, t.type, t.rad));
+  const firestoreId = urlParams.get('firestoreId');
+  let trackRawData = null;
+
+  if (firestoreId) {
+    try {
+      const doc = await collection.doc(firestoreId).get();
+      if (doc.exists) {
+        trackRawData = doc.data().data; 
+      }
+    } catch (error) {
+      console.error("Error getting Firestore document: ", error);
     }
-    initPlanck();
-    draw();
   }
+
+  if (!trackRawData) {
+    trackRawData = localStorage.getItem('track');
+  }
+
+  if (trackRawData) {
+    const track = typeof trackRawData === 'string' ? JSON.parse(trackRawData) : trackRawData;
+    loadTrack(track);
+  }
+
+  initPlanck();
+  draw();
 });

@@ -1,10 +1,7 @@
-.open-sans-<uniquifier> {
-  font-family: "Open Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: <weight>;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #gameCanvas {
@@ -29,13 +26,6 @@
   width: 48px;
   height: 48px;
   user-select: none;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #232323;
 }
 
 button {
@@ -64,11 +54,4 @@ input[type="text"] {
 
 input[type="text"]:hover {
   background-color: #333333;
-}
-
-* {
-  box-sizing: border-box;
-  font-family: 'Open Sans';
-  font-size: 16px;
-  color: #F6F254;
 }

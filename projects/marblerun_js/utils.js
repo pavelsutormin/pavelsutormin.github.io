@@ -222,6 +222,23 @@ function createCurveOutShape() {
   return pl.Polygon(vertices);
 }
 
+function loadTrack(trackArray) {
+  bricks = [];
+  for (let i = 0; i < trackArray.length; i++) {
+    const t = trackArray[i];
+    bricks.push(new Brick(t.x, t.y, t.type, t.rad));
+  }
+}
+
+function saveTrack() {
+  let track = [];
+  for (let i = 0; i < bricks.length; i++) {
+    let b = bricks[i];
+    track.push({x: b.x, y: b.y, type: b.type, rad: b.rad});
+  }
+  return track;
+}
+
 function marblerunAtConvert(origTrack) {
   let track = [];
   for (var i = 0; i < origTrack.length; i++) {

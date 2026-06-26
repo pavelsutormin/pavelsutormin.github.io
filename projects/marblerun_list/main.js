@@ -1,12 +1,12 @@
 const levelList = document.getElementById('levelList');
 
 function addLink(name, url) {
-    const newLiElement = document.createElement('li');
-    const newLinkElement = document.createElement('a');
-    newLinkElement.innerText = name;
-    newLinkElement.href = url;
-    newLiElement.appendChild(newLinkElement);
-    levelList.appendChild(newLiElement);
+  const newLiElement = document.createElement('li');
+  const newLinkElement = document.createElement('a');
+  newLinkElement.innerText = name;
+  newLinkElement.href = url;
+  newLiElement.appendChild(newLinkElement);
+  levelList.appendChild(newLiElement);
 }
 
 const firebaseConfig = {
@@ -23,14 +23,15 @@ const db = firebase.firestore(app);
 const collection = db.collection("marblerun");
 
 collection.orderBy('timestamp', 'desc')
-    .get()
-    .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            let text = "No name: " + doc.id;
-            if (doc.data().name != null) text = doc.data().name;
-            addLink(text, "/projects/marblerun_js?firestoreId=" + encodeURIComponent(doc.id));
-        });
-    })
-    .catch((error) => {
-        console.error("Error getting documents: ", error);
+  .get()
+  .then((querySnapshot) => {
+    levelList.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      let text = "No name: " + doc.id;
+      if (doc.data().name != null) text = doc.data().name;
+      addLink(text, "../marblerun_js/index.html?firestoreId=" + encodeURIComponent(doc.id));
     });
+  })
+  .catch((error) => {
+    console.error("Error getting documents: ", error);
+  });
