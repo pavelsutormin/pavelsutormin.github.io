@@ -6,13 +6,62 @@
     <title>Home</title>
     <link class="favicon" rel="icon" href="/favicon.png">
     <link rel="stylesheet" href="/style.css">
+    <style>
+      .welcome-text-container {
+        width: 100vw;
+        height: 100vh;
+        padding-bottom: 20vh;
+        margin-bottom: 50px;
+        display: grid;
+        place-items: center;
+      }
+
+      .welcome-text-container-small {
+        display: block;
+        width: fit-content;
+        height: fit-content;
+        text-align: center;
+      }
+
+      #welcome-text {
+        box-sizing: border-box;
+        font-family: Roboto Mono, monospace;
+        font-optical-sizing: auto;
+        font-weight: 700;
+        font-style: normal;
+        font-size: 6em;
+        color: #333;
+        text-shadow: #0a7 0 0 10px;
+        display: inline-block;
+        transition: transform 2s, color 2s, text-shadow 2s;
+      }
+
+      .welcome-text-letter {
+        color: #333;
+        display: inline-block;
+        transition: 2s;
+      }
+
+      .welcome-text-letter:hover {
+        transform: translateY(-40px) rotate(0.025turn);
+        text-shadow:
+          #0a7 0 0 25px,
+          4px 0 #0a7, -4px 0 #0a7, 0 4px #0a7, 0 -4px #0a7,
+          3.5px 3.5px #0a7, -3.5px -3.5px #0a7, 3.5px -3.5px #0a7, -3.5px 3.5px #0a7;
+        transition: transform 0.25s, color 0.25s, text-shadow 0.25s;
+      }
+    </style>
   </head>
   <body>
     <script src="/navbar.js"></script>
+    <div class="welcome-text-container">
+      <div class="welcome-text-container-small">
+        <h1 id="welcome-text">sutormin.org</h1>
+        <br>
+        <h1>Pasha's Website</h1>
+      </div>
+    </div>
     <div class="content">
-      <h1>This is my website. I will post future projects on here.</h1>
-      <br>
-      <br>
       <img alt="Cool image" src="/images/cool.jpg" width="600">
       <p class="image-label">Credit: Pasha Sutormin</p>
       <br>
@@ -21,5 +70,12 @@
       <p class="image-label">Credit: Abir Vaishnav</p>
       <br>
     </div>
+    <script>
+      const welcomeText = document.getElementById("welcome-text");
+      welcomeText.innerHTML = welcomeText.textContent
+        .split("")
+        .map(letter => `<span class="welcome-text-letter">${letter}</span>`)
+        .join("");
+    </script>
   </body>
 </html>

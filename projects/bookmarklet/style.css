@@ -1,0 +1,14 @@
+#bookmarklet-out {
+  background-color: #232323;
+  border: 2px solid #555555;
+  outline: none;
+}
+
+#bookmarklet-out:hover {
+  background-color: #333333;
+}
+
+#bookmarklet-out-text {
+  user-select: none;
+  padding: 20px;
+}

@@ -80,3 +80,41 @@ body {
   list-style-position: inside;
   padding-left: 15px;
 }
+
+button {
+  width: 110px;
+  height: 35px;
+  background-color: #232323;
+  border: 2px solid #555555;
+  user-select: none;
+}
+
+button:hover {
+  background-color: #333333;
+}
+
+input[type="text"] {
+  width: 110px;
+  height: 35px;
+  background-color: #232323;
+  border: 2px solid #555555;
+  outline: none;
+  vertical-align: middle;
+}
+
+input[type="text"]:hover {
+  background-color: #333333;
+}
+
+textarea {
+  width: 250px;
+  height: 150px;
+  background-color: #232323;
+  border: 2px solid #555555;
+  outline: none;
+  vertical-align: middle;
+}
+
+textarea:hover {
+  background-color: #333333;
+}

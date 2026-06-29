@@ -1,7 +1,11 @@
-.content {
+.game-content {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.elapsed-time {
+  text-align: center;
 }
 
 #gameCanvas {
@@ -28,30 +32,12 @@
   user-select: none;
 }
 
-button {
-  width: 110px;
-  height: 35px;
-  background-color: #232323;
-  border: 2px solid #555555;
-  margin-top: 10px;
-  user-select: none;
-  vertical-align: middle;
-}
-
-button:hover {
-  background-color: #333333;
-}
-
 input[type="text"] {
-  width: 110px;
-  height: 35px;
-  background-color: #232323;
-  border: 2px solid #555555;
   margin-top: 10px;
-  outline: none;
-  vertical-align: middle;
+  height: 35px;
 }
 
-input[type="text"]:hover {
-  background-color: #333333;
+button {
+  margin-top: 10px;
+  vertical-align: middle;
 }

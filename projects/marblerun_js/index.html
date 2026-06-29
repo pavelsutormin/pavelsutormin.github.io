@@ -14,40 +14,39 @@
   <body>
     <script src="/navbar.js"></script>
     <div class="content">
-      <h1>Marblerun JS</h1>
-      <br>
-      <br>
-      <canvas id="gameCanvas" oncontextmenu="return false;"></canvas>
-      <div id="controls">
-        <button id="buttonRun">Run</button>
-        <button id="buttonClear">Clear</button>
-        <br>
-        <button id="buttonSave">Save</button>
-        <button id="buttonLoad">Load</button>
-        <br>
-        <button id="buttonExport">Export</button>
-        <button id="buttonImport">Import</button>
-        <br>
-        <button id="buttonPublish" style="width: 224px;">Publish</button>
-        <br>
-        <input id="inputMarblerunAt" type="text" placeholder="Level Id" style="height: 50px;"></input>
-        <button id="buttonMarblerunAt" style="height: 50px;">Load from marblerun.at</button>
-        <br>
-        <canvas id="floatingBrickSrc0" class="floatingBrickSrc"></canvas>
-        <canvas id="floatingBrickSrc1" class="floatingBrickSrc"></canvas>
-        <canvas id="floatingBrickSrc2" class="floatingBrickSrc"></canvas>
-        <br>
-        <canvas id="floatingBrickSrc3" class="floatingBrickSrc"></canvas>
-        <canvas id="floatingBrickSrc4" class="floatingBrickSrc"></canvas>
-        <canvas id="floatingBrickSrc5" class="floatingBrickSrc"></canvas>
-        <br>
-        <canvas id="floatingBrickSrc6" class="floatingBrickSrc"></canvas>
-        <canvas id="floatingBrickSrc7" class="floatingBrickSrc"></canvas>
-        <canvas id="floatingBrickSrc8" class="floatingBrickSrc"></canvas>
+      <div class="game-content">
+        <canvas id="gameCanvas" oncontextmenu="return false;"></canvas>
+        <div id="controls">
+          <button id="buttonRun">Run</button>
+          <button id="buttonClear">Clear</button>
+          <br>
+          <button id="buttonSave">Save</button>
+          <button id="buttonLoad">Load</button>
+          <br>
+          <button id="buttonExport">Export</button>
+          <button id="buttonImport">Import</button>
+          <br>
+          <button id="buttonPublish" style="width: 230px;">Publish</button>
+          <br>
+          <input id="inputMarblerunAt" type="text" placeholder="Level Id" style="height: 50px;"></input>
+          <button id="buttonMarblerunAt" style="height: 50px;">Load from marblerun.at</button>
+          <br>
+          <canvas id="floatingBrickSrc0" class="floatingBrickSrc"></canvas>
+          <canvas id="floatingBrickSrc1" class="floatingBrickSrc"></canvas>
+          <canvas id="floatingBrickSrc2" class="floatingBrickSrc"></canvas>
+          <br>
+          <canvas id="floatingBrickSrc3" class="floatingBrickSrc"></canvas>
+          <canvas id="floatingBrickSrc4" class="floatingBrickSrc"></canvas>
+          <canvas id="floatingBrickSrc5" class="floatingBrickSrc"></canvas>
+          <br>
+          <canvas id="floatingBrickSrc6" class="floatingBrickSrc"></canvas>
+          <canvas id="floatingBrickSrc7" class="floatingBrickSrc"></canvas>
+          <canvas id="floatingBrickSrc8" class="floatingBrickSrc"></canvas>
+        </div>
+        <canvas id="floatingBrick" style="visibility: hidden;"></canvas>
       </div>
+      <p style="font-size: 22; display: block;" class="elapsed-time">Elapsed time: <span id="totalTime">0.00</span></p>
       <br>
-      <p style="font-size: 22; display: block;">Elapsed time: <span id="totalTime">0.00</span></p>
-      <canvas id="floatingBrick" style="visibility: hidden;"></canvas>
     </div>
     <script src="utils.js"></script>
     <script src="draw.js"></script>
