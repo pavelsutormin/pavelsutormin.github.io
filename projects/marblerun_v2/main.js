@@ -17,6 +17,12 @@ async function init() {
     app: Game.app
   };
 
+  Game.fpsText = new PIXI.Text({text: "FPS: -1", style: baseTextStyle});
+  Game.fpsText.x = 0;
+  Game.fpsText.y = 0;
+  Game.fpsText.zIndex = 1;
+  Game.app.stage.addChild(Game.fpsText);
+
   Game.uiContainer = new PIXI.Container();
   Game.uiContainer.addChild(createPixiButton("Run", 0, 0, 110, 35, () => {
     if (!Game.box2d) return;
@@ -41,24 +47,39 @@ async function init() {
     showToast("Loading...");
   }));
 
-  const brickSrc0 = brickTextures[0]();
-  brickSrc0.x = 0;
-  brickSrc0.y = 50 + 32 + 15;
-  brickSrc0.scale = 1.5;
-  
-  brickSrc0.eventMode = "static";
-  brickSrc0.cursor = "pointer";
-
   let draggingBrick = null;
 
+  const brickSrc0 = brickTextures[0]();
+  brickSrc0.x = (cell / 2) * 1.5;
+  brickSrc0.y = 97 + (cell / 2) * 1.5;
+  brickSrc0.scale = 1.5;
+  brickSrc0.eventMode = "static";
+  brickSrc0.cursor = "pointer";
   brickSrc0.on("pointerdown", (e) => {
-    draggingBrick = brickTextures[0]();
-    draggingBrick.alpha = 0.85;
-    Game.app.stage.addChild(draggingBrick);
+    draggingBrick = {id: 0, brick: brickTextures[0]()};
+    draggingBrick.brick.alpha = 0.85;
+    Game.app.stage.addChild(draggingBrick.brick);
 
-    draggingBrick.x = e.global.x - cell / 2;
-    draggingBrick.y = e.global.y - cell / 2;
+    draggingBrick.brick.x = e.global.x - cell / 2;
+    draggingBrick.brick.y = e.global.y - cell / 2;
   });
+  Game.uiContainer.addChild(brickSrc0);
+
+  const brickSrc1 = brickTextures[1]();
+  brickSrc1.x = cell * 1.5 + 10 + (cell / 2) * 1.5;
+  brickSrc1.y = 97 + (cell / 2) * 1.5;
+  brickSrc1.scale = 1.5;
+  brickSrc1.eventMode = "static";
+  brickSrc1.cursor = "pointer";
+  brickSrc1.on("pointerdown", (e) => {
+    draggingBrick = {id: 1, brick: brickTextures[1]()};
+    draggingBrick.brick.alpha = 0.85;
+    Game.app.stage.addChild(draggingBrick.brick);
+
+    draggingBrick.brick.x = e.global.x - cell / 2;
+    draggingBrick.brick.y = e.global.y - cell / 2;
+  });
+  Game.uiContainer.addChild(brickSrc1);
 
   Game.app.stage.eventMode = "static";
 
@@ -72,37 +93,40 @@ async function init() {
     }
 
     if (draggingBrick) {
-      draggingBrick.x = e.global.x - cell / 2;
-      draggingBrick.y = e.global.y - cell / 2;
+      draggingBrick.brick.x = e.global.x;
+      draggingBrick.brick.y = e.global.y;
     }
   });
 
   Game.app.stage.on("pointerup", (e) => {
     if (!draggingBrick) return;
     if (gridX >= 0 && gridX < fw && gridY >= 0 && gridY < fh) {
-      const alreadyExists = Game.bricks.some(b => b.x === gridX && b.y === gridY);
-      if (!alreadyExists) {
-        Game.bricks.push({x: gridX, y: gridY, id: 0});
-        createBrick(gridX, gridY, 0);
+      const alreadyExists = Game.bricks.find(b => b.x === gridX && b.y === gridY);
+      const index = Game.bricks.indexOf(alreadyExists);
+      if (alreadyExists && index > -1) {
+        Game.gameContainer.removeChild(alreadyExists.graphics);
+        Game.gameContainer.removeChild(alreadyExists.debugGraphics);
+        Game.bricks.splice(index, 1);
       }
+      Game.bricks.push({x: gridX, y: gridY, id: draggingBrick.id});
+      createBrick(gridX, gridY, draggingBrick.id);
     }
 
-    Game.app.stage.removeChild(draggingBrick);
-    draggingBrick.destroy();
+    Game.app.stage.removeChild(draggingBrick.brick);
+    draggingBrick.brick.destroy();
     draggingBrick = null;
   });
 
   Game.app.stage.on("pointerupoutside", () => {
     if (!draggingBrick) return;
-    Game.app.stage.removeChild(draggingBrick);
-    draggingBrick.destroy();
+    Game.app.stage.removeChild(draggingBrick.brick);
+    draggingBrick.brick.destroy();
     draggingBrick = null;
   });
 
-  Game.uiContainer.addChild(brickSrc0);
-
   Game.uiContainer.x = w / 2 + 15;
   Game.uiContainer.y = h / 2 - Game.uiContainer.height / 2;
+  Game.uiContainer.zIndex = 0;
   Game.app.stage.addChild(Game.uiContainer);
 
   Game.gameContainer = new PIXI.Container();
@@ -141,6 +165,7 @@ async function init() {
       createMarble(localPos.x / cell, localPos.y / cell, 0.25);
     }
   });
+  Game.gameContainer.zIndex = 0;
   Game.app.stage.addChild(Game.gameContainer);
 
   Game.box2d = await Box2D();

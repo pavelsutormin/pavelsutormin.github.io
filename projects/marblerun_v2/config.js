@@ -4,9 +4,36 @@ const fh = 15;
 
 const brickTextures = [
   () => new PIXI.Graphics()
-    .rect(0, 0, cell, cell)
+    .rect(-cell / 2, -cell / 2, cell, cell)
+    .fill(0x000000)
+    .stroke({color: 0xdddddd, width: 1}),
+  () => new PIXI.Graphics()
+    .poly([
+      -cell / 2, cell / 2,
+      -cell / 2, -cell / 2,
+      cell / 2, cell / 2
+    ])
     .fill(0x000000)
     .stroke({color: 0xdddddd, width: 1})
+];
+
+const debugTextures = [
+  () => new PIXI.Graphics()
+    .rect(-cell / 2, -cell / 2, cell, cell)
+    .stroke({color: 0xff0000, pixelLine: true})
+    .moveTo(0, 0)
+    .lineTo(0, -cell / 2)
+    .stroke({color: 0xff0000, pixelLine: true}),
+  () => new PIXI.Graphics()
+    .poly([
+      -cell / 2, cell / 2,
+      -cell / 2, -cell / 2,
+      cell / 2, cell / 2
+    ])
+    .stroke({color: 0xff0000, pixelLine: true})
+    .moveTo(0, 0)
+    .lineTo(0, -cell / 2)
+    .stroke({color: 0xff0000, pixelLine: true})
 ];
 
 const baseTextStyle = new PIXI.TextStyle({
@@ -30,4 +57,6 @@ const Game = {
     physicsObjects: [],
     bricks: [],
     running: false,
+    secondCounter: 0,
+    fpsText: null,
 };
