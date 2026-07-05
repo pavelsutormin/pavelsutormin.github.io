@@ -17,12 +17,6 @@ async function init() {
     app: Game.app
   };
 
-  Game.fpsText = new PIXI.Text({text: "FPS: -1", style: baseTextStyle});
-  Game.fpsText.x = 0;
-  Game.fpsText.y = 0;
-  Game.fpsText.zIndex = 1;
-  Game.app.stage.addChild(Game.fpsText);
-
   Game.uiContainer = new PIXI.Container();
   Game.uiContainer.addChild(createPixiButton("Run", 0, 0, 110, 35, () => {
     if (!Game.box2d) return;
@@ -47,7 +41,7 @@ async function init() {
     showToast("Loading...");
   }));
 
-  let draggingBrick = null;
+  /*let draggingBrick = null;
 
   const brickSrc0 = brickTextures[0]();
   brickSrc0.x = (cell / 2) * 1.5;
@@ -122,7 +116,7 @@ async function init() {
     Game.app.stage.removeChild(draggingBrick.brick);
     draggingBrick.brick.destroy();
     draggingBrick = null;
-  });
+  });*/
 
   Game.uiContainer.x = w / 2 + 15;
   Game.uiContainer.y = h / 2 - Game.uiContainer.height / 2;
