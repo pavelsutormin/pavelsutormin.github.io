@@ -1,14 +1,5 @@
 const levelList = document.getElementById('levelList');
 
-function addLink(name, url) {
-  const newLiElement = document.createElement('li');
-  const newLinkElement = document.createElement('a');
-  newLinkElement.innerText = name;
-  newLinkElement.href = url;
-  newLiElement.appendChild(newLinkElement);
-  levelList.appendChild(newLiElement);
-}
-
 const firebaseConfig = {
   apiKey: "AIzaSyDpd5UGaLwWoa6YPDvgip2P6k1KvWTSHno",
   authDomain: "sutormin-org.firebaseapp.com",
@@ -27,9 +18,19 @@ collection.orderBy('timestamp', 'desc')
   .then((querySnapshot) => {
     levelList.innerHTML = "";
     querySnapshot.forEach((doc) => {
-      let text = "No name: " + doc.id;
-      if (doc.data().name != null) text = doc.data().name;
-      addLink(text, "../marblerun_js/index.html?firestoreId=" + encodeURIComponent(doc.id));
+      let name = "No name: " + doc.id;
+      if (doc.data().name != null) name = doc.data().name;
+      const newLiElement = document.createElement('li');
+      const newLinkElement = document.createElement('a');
+      newLinkElement.innerText = name;
+      newLinkElement.href = "../marblerun_js/index.html?firestoreId=" + encodeURIComponent(doc.id);
+      if (doc.data().special == true) {
+        newLinkElement.style.color = "gold";
+        newLinkElement.style.fontWeight = "900";
+        newLinkElement.style.fontStyle = "italic";
+      }
+      newLiElement.appendChild(newLinkElement);
+      levelList.appendChild(newLiElement);
     });
   })
   .catch((error) => {
