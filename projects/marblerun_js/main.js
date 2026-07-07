@@ -128,9 +128,9 @@ floatingBrick.width = cellSize + 1;
 floatingBrick.height = cellSize + 1;
 controls.style.height = `${fieldHeight * cellSize}px`;
 
-[0, 1, 2, 3, 4, 5, 6, 7, 8].forEach(id => {
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(id => {
     const canvasEl = document.getElementById(`floatingBrickSrc${id}`);
-    canvasEl.width = cellSize + 1;
+    canvasEl.width = (id === 10) ? cellSize * 2 + 1 : cellSize + 1;
     canvasEl.height = cellSize + 1;
     const ctxEl = canvasEl.getContext("2d");
     ctxEl.fillStyle = "#000000";

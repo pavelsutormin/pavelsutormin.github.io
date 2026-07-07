@@ -93,6 +93,24 @@ function addBrickBodies(w, bricks) {
       const shape = pl.Box(0.5, 0.5);
       const fix = body.createFixture(shape, mat);
       fix.setUserData({type: b.type});
+    } else if (b.type === 9) {
+      body.setAngle(Math.PI / 2 - b.rad + Math.PI / 2);
+      const shape = pl.Polygon([
+        pl.Vec2(-0.5, 0.5),
+        pl.Vec2(0.5, 0.5),
+        pl.Vec2(0, -0.5),
+      ]);
+      const fix = body.createFixture(shape, mat);
+      fix.setUserData({type: b.type});
+    } else if (b.type === 10) {
+      body.setAngle(Math.PI / 2 - b.rad);
+      const shape = pl.Polygon([
+        pl.Vec2(-0.5, -1.5),
+        pl.Vec2(-0.5, 0.5),
+        pl.Vec2(0.5, 0.5),
+      ]);
+      const fix = body.createFixture(shape, mat);
+      fix.setUserData({type: b.type});
     }
   }
 }
@@ -164,6 +182,7 @@ function startRun(bricks) {
     const boostFix = (a?.type === 5) ? fixA : (b?.type === 5 ? fixB : null);
     const ballBoxFix = (a?.type === 7) ? fixA : (b?.type === 7 ? fixB : null);
     const tpBoxFix = (a?.type === 8) ? fixA : (b?.type === 8 ? fixB : null);
+    const spikeFix = (a?.type === 9) ? fixA : (b?.type === 9 ? fixB : null);
 
     if (ballFix && boostFix) {
       activeBoosts.push([ballFix, boostFix]);
@@ -187,6 +206,9 @@ function startRun(bricks) {
         worldDirection,
         ballFix.getBody()
       ]);
+    }
+    if (ballFix && spikeFix) {
+      initPlanck();
     }
   });
   world.on("end-contact", (contact) => {

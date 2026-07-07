@@ -200,6 +200,46 @@ function drawTpBox(ctx, x, y, rad) {
   ctx.restore();
 }
 
+function drawSpike(ctx, x, y, rad) {
+  const centerX = x * cellSize + cellSize / 2;
+  const centerY = y * cellSize + cellSize / 2;
+  const half = cellSize / 2;
+
+  ctx.save();
+  ctx.translate(centerX, centerY);
+  ctx.rotate(rad);
+
+  ctx.beginPath();
+  ctx.moveTo(-half + 0.5, half + 0.5);
+  ctx.lineTo(half + 0.5, half + 0.5);
+  ctx.lineTo(0, -half + 0.5);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawLongSlope(ctx, x, y, rad) {
+  const centerX = x * cellSize + cellSize / 2;
+  const centerY = y * cellSize + cellSize / 2;
+  const half = cellSize / 2;
+
+  ctx.save();
+  ctx.translate(centerX, centerY);
+  ctx.rotate(rad);
+
+  ctx.beginPath();
+  ctx.moveTo(-half + 0.5, -half + 0.5);
+  ctx.lineTo(-half + 0.5,  half + 0.5);
+  ctx.lineTo( half * 3 + 0.5,  half + 0.5);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.restore();
+}
+
 function drawAnyBrick(ctx, x, y, type, rad) {
   if (type === 0) drawBrick(ctx, x, y, rad);
   if (type === 1) drawSlope(ctx, x, y, rad);
@@ -210,4 +250,6 @@ function drawAnyBrick(ctx, x, y, type, rad) {
   if (type === 6) drawLine(ctx, x, y, rad);
   if (type === 7) drawBallBox(ctx, x, y, rad);
   if (type === 8) drawTpBox(ctx, x, y, rad);
+  if (type === 9) drawSpike(ctx, x, y, rad);
+  if (type === 10) drawLongSlope(ctx, x, y, rad);
 }
