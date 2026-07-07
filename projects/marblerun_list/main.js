@@ -28,6 +28,10 @@ collection.orderBy('timestamp', 'desc')
         newLinkElement.style.color = "gold";
         newLinkElement.style.fontWeight = "900";
         newLinkElement.style.fontStyle = "italic";
+      } else if (doc.data().kobe == true) {
+        newLinkElement.style.color = "green";
+        newLinkElement.style.fontWeight = "900";
+        newLinkElement.style.fontStyle = "italic";
       }
       newLiElement.appendChild(newLinkElement);
       levelList.appendChild(newLiElement);
