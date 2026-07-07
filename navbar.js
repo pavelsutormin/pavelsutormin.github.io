@@ -4,6 +4,7 @@ document.body.insertAdjacentHTML('afterbegin', `
       <img class="nav-logo" src="/favicon.png"/>
     </a>
     <ul class="nav-links">
+      <li><a href="/troll/index.html" style="color: red; background-color: yellow;">IF YOU ARE THE ONE POSTING BLANK LEVELS PLZ STOP</a></li>
       <li><a href="/index.html">Home</a></li>
       <li><a href="/projects/index.html">Projects</a></li>
       <li><a href="/videos/index.html">Videos</a></li>
