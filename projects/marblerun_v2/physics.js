@@ -21,7 +21,7 @@ function setupPhysicsWorld() {
   createWall(fw + 0.5, fh / 2, 1, fh);
 
   for (const b of Game.bricks) {
-    createBrick(b.x, b.y, b.id);
+    createBrick(b);
   }
   createMarble(0.5, 0.5, 0.25);
 }
@@ -44,15 +44,16 @@ function createWall(x, y, width, height) {
   body.CreateFixture(fixtureDef);
 }
 
-function createBrick(x, y, id) {
+function createBrick(b) {
   const {b2BodyDef, b2PolygonShape, b2FixtureDef, b2_staticBody} = Game.box2d;
 
   const bodyDef = new b2BodyDef();
   bodyDef.type = b2_staticBody;
-  bodyDef.position.Set(x + 0.5, y + 0.5);
+  bodyDef.position.Set(b.x + 0.5, b.y + 0.5);
+  bodyDef.angle = b.rot; 
   const body = Game.world.CreateBody(bodyDef);
 
-  const shape = (brickShapes[id] || brickShapes[0])(Game.box2d);
+  const shape = (brickShapes[b.id] || brickShapes[0])(Game.box2d);
 
   const fixtureDef = new b2FixtureDef();
   fixtureDef.shape = shape;
@@ -60,9 +61,10 @@ function createBrick(x, y, id) {
   fixtureDef.friction = 0.9;
   body.CreateFixture(fixtureDef);
 
-  const graphics = brickTextures[id]();
-  graphics.x = (x + 0.5) * cell;
-  graphics.y = (y + 0.5) * cell;
+  const graphics = brickTextures[b.id]();
+  graphics.x = (b.x + 0.5) * cell;
+  graphics.y = (b.y + 0.5) * cell;
+  graphics.rotation = b.rot;
   graphics.zIndex = 1;
   Game.gameContainer.addChild(graphics);
 
@@ -99,7 +101,7 @@ function createMarble(x, y, radius) {
 
 function update(dt) {
   if (!Game.running) return;
-  Game.world.Step(dt, 10, 10);
+  Game.world.Step(0.04, 10, 10);
   for (const obj of Game.objects) {
     const position = obj.body.GetPosition();
     const angle = obj.body.GetAngle();

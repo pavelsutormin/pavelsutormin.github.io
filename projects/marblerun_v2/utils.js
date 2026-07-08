@@ -66,7 +66,21 @@ function marblerunAtConvert(origTrack) {
   for (var i = 0; i < origTrack.length; i++) {
     let b = origTrack[i];
     if (b.type == "Brick") {
-      track.push({x: b.col, y: b.row, id: 0});
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 0});
+    } else if (b.type == "Ramp") {
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 1});
+    } else if (b.type == "Kicker") {
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 2});
+    } else if (b.type == "Curve") {
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 3});
+    } else if (b.type == "Exit") {
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 4});
+    } else if (b.type == "Boost") {
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 5});
+    } else if (b.type == "Line") {
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 6});
+    } else if (b.type == "BallBox") {
+      track.push({x: b.col, y: b.row, rot: b.rotation * (Math.PI / 2), id: 7});
     }
   }
   return track;
@@ -83,13 +97,4 @@ async function loadFromMarblerunAt(trackId) {
   }
   const data = await res.json();
   return marblerunAtConvert(Object.values(data.track.json.bricks));
-}
-
-function showToast(message) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerText = message;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 2000);
 }

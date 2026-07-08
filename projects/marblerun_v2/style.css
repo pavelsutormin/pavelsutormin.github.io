@@ -4,29 +4,3 @@ canvas {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
-
-#toast-container {
-  position: absolute;
-  display: grid;
-  bottom: 20px;
-  width: 100%;
-  place-items: center;
-  pointer-events: none;
-}
-
-.toast {
-    background: #333;
-    color: #fff;
-    border: solid 2px #0a7;
-    padding: 12px 24px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    animation: fadein 0.5s, fadeout 0.5s 1.5s;
-    width: 250px;
-    text-align: center;
-    opacity: 0.8;
-    backdrop-filter: blur(5px);
-}
-
-@keyframes fadein { from {opacity: 0;} to {opacity: 0.8;} }
-@keyframes fadeout { from {opacity: 0.8;} to {opacity: 0;} }

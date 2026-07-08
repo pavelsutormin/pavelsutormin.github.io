@@ -35,95 +35,74 @@ async function init() {
     setupPhysicsWorld();
   }));
   Game.uiContainer.addChild(createPixiButton("Save", 0, 50, 110, 35, () => {
-    showToast("Saving...");
+    localStorage.setItem("track", JSON.stringify(Game.bricks));
   }));
   Game.uiContainer.addChild(createPixiButton("Load", 125, 50, 110, 35, () => {
-    showToast("Loading...");
+    Game.running = false;
+    if (localStorage.getItem("track") != null) Game.bricks = JSON.parse(localStorage.getItem("track"));
+    Game.bricks.forEach((b) => {
+      if (b.id == null && b.type != null) {
+        b.id = b.type;
+        delete b.type;
+      }
+      if (b.rot == null && b.rad != null) {
+        b.rot = b.rad;
+        delete b.rad;
+      }
+    });
+    setupPhysicsWorld();
   }));
 
-  /*let draggingBrick = null;
-
-  const brickSrc0 = brickTextures[0]();
-  brickSrc0.x = (cell / 2) * 1.5;
-  brickSrc0.y = 97 + (cell / 2) * 1.5;
-  brickSrc0.scale = 1.5;
-  brickSrc0.eventMode = "static";
-  brickSrc0.cursor = "pointer";
-  brickSrc0.on("pointerdown", (e) => {
-    draggingBrick = {id: 0, brick: brickTextures[0]()};
-    draggingBrick.brick.alpha = 0.85;
-    Game.app.stage.addChild(draggingBrick.brick);
-
-    draggingBrick.brick.x = e.global.x - cell / 2;
-    draggingBrick.brick.y = e.global.y - cell / 2;
+  let selectedBrick = 0;
+  let currIndex = 0;
+  let gridX, gridY;
+  [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach((id) => {
+    const brickSrc = brickTextures[id]();
+    brickSrc.x = (cell / 2) * 1.5 + cell * 1.5 * currIndex;
+    brickSrc.y = 97 + (cell / 2) * 1.5;
+    brickSrc.scale = 1.5;
+    brickSrc.eventMode = "static";
+    brickSrc.cursor = "pointer";
+    brickSrc.on("pointerdown", (e) => {
+      selectedBrick = id;
+    });
+    Game.uiContainer.addChild(brickSrc);
+    currIndex++;
   });
-  Game.uiContainer.addChild(brickSrc0);
 
-  const brickSrc1 = brickTextures[1]();
-  brickSrc1.x = cell * 1.5 + 10 + (cell / 2) * 1.5;
-  brickSrc1.y = 97 + (cell / 2) * 1.5;
-  brickSrc1.scale = 1.5;
-  brickSrc1.eventMode = "static";
-  brickSrc1.cursor = "pointer";
-  brickSrc1.on("pointerdown", (e) => {
-    draggingBrick = {id: 1, brick: brickTextures[1]()};
-    draggingBrick.brick.alpha = 0.85;
-    Game.app.stage.addChild(draggingBrick.brick);
+  Game.gameContainer = new PIXI.Container();
 
-    draggingBrick.brick.x = e.global.x - cell / 2;
-    draggingBrick.brick.y = e.global.y - cell / 2;
-  });
-  Game.uiContainer.addChild(brickSrc1);
+  const gridHighlight = new PIXI.Graphics()
+    .rect(-0.5, -0.5, cell + 1, cell + 1)
+    .fill({color: 0x000000, alpha: 0.5});
+  gridHighlight.zIndex = 1;
+  Game.gameContainer.addChild(gridHighlight);
 
-  Game.app.stage.eventMode = "static";
-
-  Game.app.stage.on("pointermove", (e) => {
+  Game.gameContainer.eventMode = "static";
+  Game.gameContainer.on("pointermove", (e) => {
     const localGamePos = Game.gameContainer.toLocal(e.global);
     gridX = Math.floor(localGamePos.x / cell);
     gridY = Math.floor(localGamePos.y / cell);
     if (gridX < 0 || gridX >= fw || gridY < 0 || gridY >= fh) {
       gridX = null;
       gridY = null;
-    }
-
-    if (draggingBrick) {
-      draggingBrick.brick.x = e.global.x;
-      draggingBrick.brick.y = e.global.y;
+    } else {
+      gridHighlight.x = gridX * cell;
+      gridHighlight.y = gridY * cell;
     }
   });
 
-  Game.app.stage.on("pointerup", (e) => {
-    if (!draggingBrick) return;
-    if (gridX >= 0 && gridX < fw && gridY >= 0 && gridY < fh) {
-      const alreadyExists = Game.bricks.find(b => b.x === gridX && b.y === gridY);
-      const index = Game.bricks.indexOf(alreadyExists);
-      if (alreadyExists && index > -1) {
-        Game.gameContainer.removeChild(alreadyExists.graphics);
-        Game.gameContainer.removeChild(alreadyExists.debugGraphics);
-        Game.bricks.splice(index, 1);
-      }
-      Game.bricks.push({x: gridX, y: gridY, id: draggingBrick.id});
-      createBrick(gridX, gridY, draggingBrick.id);
-    }
-
-    Game.app.stage.removeChild(draggingBrick.brick);
-    draggingBrick.brick.destroy();
-    draggingBrick = null;
+  Game.gameContainer.on("pointerdown", (e) => {
+    if (selectedBrick == null || gridX == null || gridY == null) return;
+    Game.running = false;
+    Game.bricks.push({x: gridX, y: gridY, id: selectedBrick, rot: 0});
+    setupPhysicsWorld();
   });
-
-  Game.app.stage.on("pointerupoutside", () => {
-    if (!draggingBrick) return;
-    Game.app.stage.removeChild(draggingBrick.brick);
-    draggingBrick.brick.destroy();
-    draggingBrick = null;
-  });*/
 
   Game.uiContainer.x = w / 2 + 15;
   Game.uiContainer.y = h / 2 - Game.uiContainer.height / 2;
   Game.uiContainer.zIndex = 0;
   Game.app.stage.addChild(Game.uiContainer);
-
-  Game.gameContainer = new PIXI.Container();
 
   const bg = new PIXI.Graphics()
     .rect(-2, -2, fw * cell + 4, fh * cell + 4)
@@ -177,4 +156,10 @@ window.addEventListener("resize", (e) => {
   Game.app.renderer.resize(w, h);
 });
 
-init();
+init().then(() => {
+  loadFromMarblerunAt(4676595).then((track) => {
+    Game.bricks = track;
+    Game.running = false;
+    setupPhysicsWorld();
+  });
+});

@@ -174,17 +174,7 @@ let w = window.innerWidth;
 const Game = {
   // game
   running: false,
-  bricks: [
-    {x: 0, y: fh - 1, id: 0},
-    {x: 1, y: fh - 1, id: 1},
-    {x: 2, y: fh - 1, id: 2},
-    {x: 3, y: fh - 1, id: 3},
-    {x: 4, y: fh - 1, id: 4},
-    {x: 5, y: fh - 1, id: 5},
-    {x: 6, y: fh - 1, id: 6},
-    {x: 7, y: fh - 1, id: 7},
-    {x: 8, y: fh - 1, id: 8},
-  ],
+  bricks: [],
 
   // graphics
   app: null,

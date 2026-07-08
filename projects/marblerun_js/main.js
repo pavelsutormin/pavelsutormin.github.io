@@ -249,7 +249,6 @@ document.getElementById("buttonImport").addEventListener('click', (event) => {
 });
 
 document.getElementById("buttonPublish").addEventListener('click', (event) => {
-  /*
   let name = prompt("Enter name of track: (empty for no name)");
   if (name != null) name = name.trim();
   if (name === '') name = null;
@@ -259,9 +258,7 @@ document.getElementById("buttonPublish").addEventListener('click', (event) => {
     track.push({x: b.x, y: b.y, type: b.type, rad: b.rad});
   }
   publishData(name, JSON.stringify(track));
-  draw();*/
-  alert("Nuh-uh");
-  window.location.href = "/troll/index.html";
+  draw();
 });
 
 document.getElementById("buttonMarblerunAt").addEventListener('click', (event) => {
