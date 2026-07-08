@@ -139,7 +139,7 @@ controls.style.height = `${fieldHeight * cellSize}px`;
     
     drawAnyBrick(ctxEl, 0, 0, id, 0);
 
-    canvasEl.addEventListener('mousedown', (event) => {
+    canvasEl.addEventListener('pointerdown', (event) => {
       if (selectedBrick == null) {
         var i = bricks.push(new Brick(0, 0, id, 0)) - 1;
         bricks[i].visible = false;
@@ -159,7 +159,7 @@ document.body.addEventListener('mousemove', (event) => {
   draw();
 });
 
-document.body.addEventListener('mousedown', (event) => {
+document.body.addEventListener('pointerdown', (event) => {
   if (event.button === 0) {
     if (mouseX >= 0 && mouseX < fieldWidth && mouseY >= 0 && mouseY < fieldHeight) {
       if (!brickPick() && lastPlaced != null && lastRotation != null) {
@@ -192,7 +192,7 @@ document.body.addEventListener('mousedown', (event) => {
   draw();
 });
 
-document.body.addEventListener('mouseup', (event) => {
+document.body.addEventListener('pointerup', (event) => {
   if (event.button === 0) {
     brickPut();
   }
@@ -273,46 +273,6 @@ document.getElementById("buttonMarblerunAt").addEventListener('click', (event) =
       .catch((err) => {
         console.log(err);
       });
-  }
-});
-
-document.getElementById("floatingBrickSrc0").addEventListener('mousedown', (event) => {
-  if (selectedBrick == null) {
-    var i = bricks.push(new Brick(0, 0, 0, 0)) - 1;
-    bricks[i].visible = false;
-    selectedBrick = i;
-    floatingBrick.style.visibility = "visible";
-    floatingBrickSetType(bricks[i].type);
-  }
-});
-
-document.getElementById("floatingBrickSrc1").addEventListener('mousedown', (event) => {
-  if (selectedBrick == null) {
-    var i = bricks.push(new Brick(0, 0, 1, 0)) - 1;
-    bricks[i].visible = false;
-    selectedBrick = i;
-    floatingBrick.style.visibility = "visible";
-    floatingBrickSetType(bricks[i].type);
-  }
-});
-
-document.getElementById("floatingBrickSrc2").addEventListener('mousedown', (event) => {
-  if (selectedBrick == null) {
-    var i = bricks.push(new Brick(0, 0, 2, 0)) - 1;
-    bricks[i].visible = false;
-    selectedBrick = i;
-    floatingBrick.style.visibility = "visible";
-    floatingBrickSetType(bricks[i].type);
-  }
-});
-
-document.getElementById("floatingBrickSrc3").addEventListener('mousedown', (event) => {
-  if (selectedBrick == null) {
-    var i = bricks.push(new Brick(0, 0, 3, 0)) - 1;
-    bricks[i].visible = false;
-    selectedBrick = i;
-    floatingBrick.style.visibility = "visible";
-    floatingBrickSetType(bricks[i].type);
   }
 });
 
