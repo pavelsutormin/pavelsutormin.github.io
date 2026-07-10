@@ -2,7 +2,7 @@ function setupPhysicsWorld() {
   const {b2Vec2, b2World} = Game.box2d;
 
   for (const obj of Game.objects) {
-    Game.gameContainer.removeChild(obj.graphics);
+    Game.app.stage.removeChild(obj.graphics);
   }
   Game.objects.length = 0;
   
@@ -14,6 +14,36 @@ function setupPhysicsWorld() {
   const gravity = new b2Vec2(0, 9.81);
   Game.world = new b2World(gravity);
   Game.world.SetAllowSleeping(true);
+
+  const listener = Object.assign(new Game.box2d.JSContactListener(), {
+    BeginContact: (contactPtr) => {
+      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
+      const fixtureA = contact.GetFixtureA();
+      const fixtureB = contact.GetFixtureB();
+
+      const dataA = fixtureB.GetUserData();
+      const dataB = fixtureB.GetUserData();
+      console.log(dataA, dataB)
+      console.log("BeginContact", contact);
+    },
+
+    EndContact: (contactPtr) => {
+      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
+      console.log("EndContact", contact);
+    },
+
+    PreSolve: (contactPtr, oldManifoldPtr) => {
+      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
+      console.log("PreSolve", contact);
+    },
+
+    PostSolve: (contactPtr, impulsePtr) => {
+      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
+      console.log("PostSolve", contact);
+    }
+  });
+
+  Game.world.SetContactListener(listener);
 
   createWall(fw / 2, -0.5, fw, 1);
   createWall(fw / 2, fh + 0.5, fw, 1);
@@ -53,20 +83,21 @@ function createBrick(b) {
   bodyDef.angle = b.rot; 
   const body = Game.world.CreateBody(bodyDef);
 
-  const shape = (brickShapes[b.id] || brickShapes[0])(Game.box2d);
+  const shape = (brickShapes[b.id])(Game.box2d);
 
   const fixtureDef = new b2FixtureDef();
   fixtureDef.shape = shape;
   fixtureDef.density = 0.0;
   fixtureDef.friction = 0.9;
-  body.CreateFixture(fixtureDef);
+  fixtureDef.userData = {id: b.id};
+  const fix = body.CreateFixture(fixtureDef);
 
   const graphics = brickTextures[b.id]();
   graphics.x = (b.x + 0.5) * cell;
   graphics.y = (b.y + 0.5) * cell;
   graphics.rotation = b.rot;
   graphics.zIndex = 1;
-  Game.gameContainer.addChild(graphics);
+  Game.app.stage.addChild(graphics);
 
   Game.objects.push({body, graphics});
 }
@@ -86,7 +117,8 @@ function createMarble(x, y, radius) {
   fixtureDef.shape = shape;
   fixtureDef.density = 2;
   fixtureDef.friction = 0.9;
-  body.CreateFixture(fixtureDef);
+  fixtureDef.userData = {id: -1};
+  const fix = body.CreateFixture(fixtureDef);
 
   const graphics = new PIXI.Graphics()
     .circle(0, 0, 0.25 * cell)
@@ -94,7 +126,7 @@ function createMarble(x, y, radius) {
   graphics.x = x * cell;
   graphics.y = y * cell;
   graphics.zIndex = 2;
-  Game.gameContainer.addChild(graphics);
+  Game.app.stage.addChild(graphics);
 
   Game.objects.push({body, graphics});
 }

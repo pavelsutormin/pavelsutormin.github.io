@@ -62,7 +62,12 @@ const brickShapes = [
     const shape = new box2d.b2PolygonShape();
     shape.SetAsBox(0.5, 0.5);
     return shape;
-  }
+  },
+  (box2d) => {
+    const shape = new box2d.b2PolygonShape();
+    shape.SetAsBox(0.5, 0.5);
+    return shape;
+  },
 ];
 
 const brickTextures = [
@@ -159,17 +164,16 @@ const brickTextures = [
     .lineTo(cell * 2 / 7 - cell / 2, cell * 5 / 14 - cell / 2)
     .closePath()
     .fill(0x000080)
+    .stroke({ color: 0xdddddd, width: 1 }),
+
+  () => new PIXI.Graphics()
+    .rect(-cell / 2, -cell / 2, cell, cell)
+    .fill(0x000000)
     .stroke({ color: 0xdddddd, width: 1 })
+    .rect(-cell / 6 - cell / 6, cell / 3, cell / 3)
+    .fill(0x19ff00)
+    .stroke({ color: 0xdddddd, width: 1 }),
 ];
-
-const baseTextStyle = new PIXI.TextStyle({
-    fontFamily: 'monospace',
-    fontSize: 16,
-    fill: 0xffffff,
-});
-
-let h = window.innerHeight - document.getElementsByClassName("navbar")[0].scrollHeight;
-let w = window.innerWidth;
 
 const Game = {
   // game
@@ -178,8 +182,6 @@ const Game = {
 
   // graphics
   app: null,
-  gameContainer: null,
-  uiContainer: null,
 
   // physics
   box2d: null,

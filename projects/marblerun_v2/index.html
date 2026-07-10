@@ -12,6 +12,43 @@
   </head>
   <body>
     <script src="/navbar.js"></script>
+    <div class="content">
+      <canvas id="game-canvas"></canvas>
+      <div id="controls">
+        <button id="run-button">Run</button>
+        <button id="reset-button">Reset</button>
+        <br>
+        <button id="clear-button">Clear</button>
+        <button id="publish-button">Publish</button>
+        <br>
+        <button id="load-button">Load</button>
+        <button id="save-button">Save</button>
+        <br>
+        <input id="trackid-input" type="text" placeholder="track id"></input>
+        <button id="marblerunat-button">marblerun.at</button>
+        <br>
+        <div class="brick-row">
+          <canvas class="brick" id="brick-0"></canvas>
+          <canvas class="brick" id="brick-1"></canvas>
+          <canvas class="brick" id="brick-2"></canvas>
+        </div>
+        <div class="brick-row">
+          <canvas class="brick" id="brick-3"></canvas>
+          <canvas class="brick" id="brick-4"></canvas>
+          <canvas class="brick" id="brick-5"></canvas>
+        </div>
+        <div class="brick-row">
+          <canvas class="brick" id="brick-6"></canvas>
+          <canvas class="brick" id="brick-7"></canvas>
+          <canvas class="brick" id="brick-8"></canvas>
+        </div>
+        <div class="brick-row">
+          <canvas class="brick" id="brick-9"></canvas>
+          <canvas class="brick" id="brick-10"></canvas>
+          <canvas class="brick" id="brick-11"></canvas>
+        </div>
+      </div>
+    </div>
     <script src="config.js"></script>
     <script src="utils.js"></script>
     <script src="physics.js"></script>

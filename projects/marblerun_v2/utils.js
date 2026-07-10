@@ -1,4 +1,4 @@
-function graphicsDashedLine(graphics, startX, startY, endX, endY, dashLength, gapLength) {
+function drawDashedLine(graphics, startX, startY, endX, endY, dashLength, gapLength) {
     const dx = endX - startX;
     const dy = endY - startY;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -28,37 +28,6 @@ function graphicsDashedLine(graphics, startX, startY, endX, endY, dashLength, ga
         progress += step;
         drawing = !drawing;
     }
-}
-
-function createPixiButton(text, x, y, width, height, onClick) {
-    const container = new PIXI.Container();
-    container.eventMode = 'static';
-    container.cursor = 'pointer';
-
-    const bg = new PIXI.Graphics();
-    const drawBg = (color) => {
-        bg.clear()
-          .rect(0, 0, width, height)
-          .fill(color)
-          .stroke({width: 2, color: 0x555555});
-    };
-
-    drawBg(0x232323); 
-
-    const label = new PIXI.Text({text, style: baseTextStyle});
-    label.anchor.set(0.5);
-    label.position.set(width / 2, height / 2);
-
-    container.addChild(bg, label);
-
-    container.on("pointerover", () => drawBg(0x333333));
-    container.on("pointerout", () => drawBg(0x232323));
-    container.on("pointerdown", onClick);
-
-    container.x = x;
-    container.y = y;
-
-    return container;
 }
 
 function marblerunAtConvert(origTrack) {
