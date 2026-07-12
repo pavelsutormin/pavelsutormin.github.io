@@ -77,7 +77,20 @@ async function init() {
     });
   });
 
-  let selected = null;
+
+  let selected = 0;
+  let action = 3;
+  let latestRot = 0;
+  [0, 1, 2, 3].forEach((id, index) => {
+    const button = document.getElementById("action-" + id);
+    if (button == null) return;
+    button.addEventListener("click", (e) => {
+      action = id;
+      [...document.getElementsByClassName("action")].forEach((b) => b.style.borderColor = null);
+      button.style.borderColor = "blue";
+    });
+  });
+
   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].forEach((id, index) => {
     const canvas = document.getElementById("brick-" + id);
     if (canvas == null) return;
@@ -94,7 +107,7 @@ async function init() {
     ctx.drawImage(sourceCanvas, 0, 0, cell * 2, cell * 2);
     texture.destroy(true);
     g.destroy();
-    canvas.addEventListener("pointerdown", (e) => {
+    canvas.addEventListener("click", (e) => {
       selected = id;
       [...document.getElementsByClassName("brick")].forEach((b) => b.style.borderColor = null);
       canvas.style.borderColor = "blue";
@@ -102,20 +115,48 @@ async function init() {
   });
 
   Game.app.canvas.addEventListener("pointerdown", (e) => {
+    if (action == null) return;
     const rect = Game.app.canvas.getBoundingClientRect();
     const gridX = Math.floor((e.clientX - rect.left) / cell);
     const gridY = Math.floor((e.clientY - rect.top) / cell);
     if (!(gridX >= 0 && gridX < fw && gridY >= 0 && gridY < fh)) return;
-    if (e.button == 0) {
+    if (action == 0) {
       if (selected == null) return;
       Game.running = false;
       Game.bricks = Game.bricks.filter(block => block.x !== gridX || block.y !== gridY);
       Game.bricks.push({x: gridX, y: gridY, id: selected, rot: 0});
       setupPhysicsWorld();
-    } else if (e.button == 2) {
+      holding = true;
+    } else if (action == 1) {
       Game.running = false;
-      Game.bricks.filter(b => b.x === gridX && b.y === gridY).forEach((b) => b.rot += Math.PI / 2);
+      Game.bricks.filter(b => b.x === gridX && b.y === gridY).forEach((b) => {
+        b.rot += Math.PI / 2;
+        latestRot = b.rot;
+      });
       setupPhysicsWorld();
+    } else if (action == 2) {
+      Game.running = false;
+      Game.bricks = Game.bricks.filter(b => b.x !== gridX || b.y !== gridY);
+      setupPhysicsWorld();
+    } else if (action == 3) {
+      if (e.button == 0) {
+        if (selected == null) return;
+        Game.running = false;
+        Game.bricks = Game.bricks.filter(block => block.x !== gridX || block.y !== gridY);
+        Game.bricks.push({x: gridX, y: gridY, id: selected, rot: latestRot});
+        setupPhysicsWorld();
+      } else if (e.button == 1) {
+        Game.running = false;
+        Game.bricks = Game.bricks.filter(b => b.x !== gridX || b.y !== gridY);
+        setupPhysicsWorld();
+      } else if (e.button == 2) {
+        Game.running = false;
+        Game.bricks.filter(b => b.x === gridX && b.y === gridY).forEach((b) => {
+          b.rot += Math.PI / 2;
+          latestRot = b.rot;
+        });
+        setupPhysicsWorld();
+      }
     }
   });
 

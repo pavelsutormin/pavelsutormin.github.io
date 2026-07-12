@@ -223,10 +223,20 @@ function createCurveOutShape() {
 }
 
 function loadTrack(trackArray) {
+  trackArray.forEach((b) => {
+    if (b.id == null && b.type != null) {
+      b.id = b.type;
+      delete b.type;
+    }
+    if (b.rot == null && b.rad != null) {
+      b.rot = b.rad;
+      delete b.rad;
+    }
+  });
   bricks = [];
   for (let i = 0; i < trackArray.length; i++) {
     const t = trackArray[i];
-    bricks.push(new Brick(t.x, t.y, t.type, t.rad));
+    bricks.push(new Brick(t.x, t.y, t.id, t.rot));
   }
 }
 
@@ -234,7 +244,7 @@ function saveTrack() {
   let track = [];
   for (let i = 0; i < bricks.length; i++) {
     let b = bricks[i];
-    track.push({x: b.x, y: b.y, type: b.type, rad: b.rad});
+    track.push({x: b.x, y: b.y, id: b.type, rot: b.rad});
   }
   return track;
 }

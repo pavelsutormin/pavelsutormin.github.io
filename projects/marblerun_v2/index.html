@@ -7,8 +7,8 @@
     <link class="favicon" rel="icon" href="/favicon.png">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.19.0/dist/pixi.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/box2d-wasm@7.0.0/dist/umd/Box2D.min.js"></script>
+    <script src="/static/pixi.min.js"></script>
+    <script src="/static/Box2D.min.js"></script>
   </head>
   <body>
     <script src="/navbar.js"></script>
@@ -27,8 +27,14 @@
         <input id="trackid-input" type="text" placeholder="track id"></input>
         <button id="marblerunat-button">marblerun.at</button>
         <br>
+        <button class="action" id="action-0">Place</button>
+        <button class="action" id="action-1">Rotate</button>
+        <br>
+        <button class="action" id="action-2">Delete</button>
+        <button class="action" id="action-3" style="border-color: blue;">Mouse</button>
+        <br>
         <div class="brick-row">
-          <canvas class="brick" id="brick-0"></canvas>
+          <canvas class="brick" id="brick-0" style="border-color: blue;"></canvas>
           <canvas class="brick" id="brick-1"></canvas>
           <canvas class="brick" id="brick-2"></canvas>
         </div>
@@ -41,11 +47,6 @@
           <canvas class="brick" id="brick-6"></canvas>
           <canvas class="brick" id="brick-7"></canvas>
           <canvas class="brick" id="brick-8"></canvas>
-        </div>
-        <div class="brick-row">
-          <canvas class="brick" id="brick-9"></canvas>
-          <canvas class="brick" id="brick-10"></canvas>
-          <canvas class="brick" id="brick-11"></canvas>
         </div>
       </div>
     </div>

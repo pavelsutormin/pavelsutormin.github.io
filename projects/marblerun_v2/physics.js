@@ -1,5 +1,5 @@
 function setupPhysicsWorld() {
-  const {b2Vec2, b2World} = Game.box2d;
+  const {b2Vec2, b2World, wrapPointer, getPointer} = Game.box2d;
 
   for (const obj of Game.objects) {
     Game.app.stage.removeChild(obj.graphics);
@@ -17,29 +17,78 @@ function setupPhysicsWorld() {
 
   const listener = Object.assign(new Game.box2d.JSContactListener(), {
     BeginContact: (contactPtr) => {
-      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
+      const contact = wrapPointer(contactPtr, Game.box2d.b2Contact);
       const fixtureA = contact.GetFixtureA();
       const fixtureB = contact.GetFixtureB();
-
-      const dataA = fixtureB.GetUserData();
-      const dataB = fixtureB.GetUserData();
-      console.log(dataA, dataB)
-      console.log("BeginContact", contact);
+      const dataA = Game.userDataMap.get(getPointer(fixtureA));
+      const dataB = Game.userDataMap.get(getPointer(fixtureB));
+      const marbleFix = dataA?.id == -1 ? fixtureA : dataB?.id == -1 ? fixtureB : null;
+      const tpBrickFix = dataA?.id == 8 ? fixtureA : dataB?.id == 8 ? fixtureB : null;
+      const ballBrickFix = dataA?.id == 7 ? fixtureA : dataB?.id == 7 ? fixtureB : null;
+      const boostBrickFix = dataA?.id == 5 ? fixtureA : dataB?.id == 5 ? fixtureB : null;
+      const endBrickFix = dataA?.id == 4 ? fixtureA : dataB?.id == 4 ? fixtureB : null;
+      const marble = marbleFix ? marbleFix.GetBody() : null;
+      const tpBrick = tpBrickFix ? tpBrickFix.GetBody() : null;
+      const ballBrick = ballBrickFix ? ballBrickFix.GetBody() : null;
+      const boostBrick = boostBrickFix ? boostBrickFix.GetBody() : null;
+      const endBrick = endBrickFix ? endBrickFix.GetBody() : null;
+      if (marble != null && tpBrick != null) {
+        Game.pendingActions.push(() => {
+          const targetPosition = tpBrick.GetWorldPoint(new b2Vec2(0, 0.6));
+          marble.SetTransform(targetPosition, marble.GetAngle());
+          marble.ApplyLinearImpulse(tpBrick.GetWorldVector(new b2Vec2(0, 6)), marble.GetWorldCenter(), true);
+          return true;
+        });
+      } else if (marble != null && ballBrick != null && Game.userDataMap.get(getPointer(ballBrickFix)).active) {
+        Game.pendingActions.push(() => {
+          const targetPosition = ballBrick.GetWorldPoint(new b2Vec2(0, 0.6));
+          const newMarble = createMarble(targetPosition.x, targetPosition.y, 0.25);
+          newMarble.ApplyLinearImpulseToCenter(ballBrick.GetWorldVector(new b2Vec2(0, 6)), true);
+          Game.userDataMap.get(getPointer(ballBrickFix)).active = false;
+          return true;
+        });
+      } else if (marble != null && boostBrick != null) {
+        Game.userDataMap.get(getPointer(boostBrickFix)).active = true;
+        const boostVector = new b2Vec2(.6, 0);
+        const worldBoostVector = boostBrick.GetWorldVector(boostVector);
+        Game.pendingActions.push(() => {
+          marble.ApplyLinearImpulseToCenter(worldBoostVector, true);
+          if (!Game.userDataMap.get(getPointer(boostBrickFix)).active) {
+            Game.box2d.destroy(worldBoostVector);
+            Game.box2d.destroy(boostVector);
+            return true;
+          }
+          return false;
+        });
+      } else if (marble != null && endBrick != null) {
+        Game.pendingActions.push(() => {
+          Game.running = false;
+          return true;
+        });
+      }
     },
 
     EndContact: (contactPtr) => {
-      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
-      console.log("EndContact", contact);
+      const contact = wrapPointer(contactPtr, Game.box2d.b2Contact);
+      const fixtureA = contact.GetFixtureA();
+      const fixtureB = contact.GetFixtureB();
+      const dataA = Game.userDataMap.get(getPointer(fixtureA));
+      const dataB = Game.userDataMap.get(getPointer(fixtureB));
+      const marbleFix = dataA?.id == -1 ? fixtureA : dataB?.id == -1 ? fixtureB : null;
+      const boostBrickFix = dataA?.id == 5 ? fixtureA : dataB?.id == 5 ? fixtureB : null;
+      const marble = marbleFix ? marbleFix.GetBody() : null;
+      const boostBrick = boostBrickFix ? boostBrickFix.GetBody() : null;
+      if (marble != null && boostBrick != null) {
+        Game.userDataMap.get(getPointer(boostBrickFix)).active = false;
+      }
     },
 
     PreSolve: (contactPtr, oldManifoldPtr) => {
-      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
-      console.log("PreSolve", contact);
+      const contact = wrapPointer(contactPtr, Game.box2d.b2Contact);
     },
 
     PostSolve: (contactPtr, impulsePtr) => {
-      const contact = Game.box2d.wrapPointer(contactPtr, Game.box2d.b2Contact);
-      console.log("PostSolve", contact);
+      const contact = wrapPointer(contactPtr, Game.box2d.b2Contact);
     }
   });
 
@@ -75,7 +124,7 @@ function createWall(x, y, width, height) {
 }
 
 function createBrick(b) {
-  const {b2BodyDef, b2PolygonShape, b2FixtureDef, b2_staticBody} = Game.box2d;
+  const {b2BodyDef, b2PolygonShape, b2FixtureDef, b2_staticBody, getPointer} = Game.box2d;
 
   const bodyDef = new b2BodyDef();
   bodyDef.type = b2_staticBody;
@@ -83,14 +132,20 @@ function createBrick(b) {
   bodyDef.angle = b.rot; 
   const body = Game.world.CreateBody(bodyDef);
 
-  const shape = (brickShapes[b.id])(Game.box2d);
-
-  const fixtureDef = new b2FixtureDef();
-  fixtureDef.shape = shape;
-  fixtureDef.density = 0.0;
-  fixtureDef.friction = 0.9;
-  fixtureDef.userData = {id: b.id};
-  const fix = body.CreateFixture(fixtureDef);
+  const shapeResult = (brickShapes[b.id])(Game.box2d);
+  const shapes = Array.isArray(shapeResult) ? shapeResult : [shapeResult];
+  for (let i = 0; i < shapes.length; i++) {
+    const fixtureDef = new b2FixtureDef();
+    fixtureDef.shape = shapes[i];
+    fixtureDef.density = 0.0;
+    fixtureDef.friction = 0.9;
+    fixtureDef.userData = {id: b.id};
+    if (b.id == 4 || b.id == 5) fixtureDef.isSensor = true;
+    const fixture = body.CreateFixture(fixtureDef);
+    const userData = {id: b.id};
+    if (b.id == 5 || b.id == 7 || b.id == 8) userData.active = true;
+    Game.userDataMap.set(getPointer(fixture), userData);
+  }
 
   const graphics = brickTextures[b.id]();
   graphics.x = (b.x + 0.5) * cell;
@@ -100,10 +155,11 @@ function createBrick(b) {
   Game.app.stage.addChild(graphics);
 
   Game.objects.push({body, graphics});
+  return body;
 }
 
 function createMarble(x, y, radius) {
-  const {b2BodyDef, b2CircleShape, b2FixtureDef, b2_dynamicBody} = Game.box2d;
+  const {b2BodyDef, b2CircleShape, b2FixtureDef, b2_dynamicBody, getPointer} = Game.box2d;
 
   const bodyDef = new b2BodyDef();
   bodyDef.type = b2_dynamicBody;
@@ -117,8 +173,8 @@ function createMarble(x, y, radius) {
   fixtureDef.shape = shape;
   fixtureDef.density = 2;
   fixtureDef.friction = 0.9;
-  fixtureDef.userData = {id: -1};
-  const fix = body.CreateFixture(fixtureDef);
+  const fixture = body.CreateFixture(fixtureDef);
+  Game.userDataMap.set(getPointer(fixture), {id: -1});
 
   const graphics = new PIXI.Graphics()
     .circle(0, 0, 0.25 * cell)
@@ -129,11 +185,13 @@ function createMarble(x, y, radius) {
   Game.app.stage.addChild(graphics);
 
   Game.objects.push({body, graphics});
+  return body;
 }
 
 function update(dt) {
   if (!Game.running) return;
-  Game.world.Step(0.04, 10, 10);
+  Game.world.Step(0.02, 10, 10);
+  Game.pendingActions = Game.pendingActions.filter((f) => !f());
   for (const obj of Game.objects) {
     const position = obj.body.GetPosition();
     const angle = obj.body.GetAngle();

@@ -17,10 +17,22 @@
   width: 48px;
   height: 48px;
   background-color: #242424;
-  border: 2px solid #333;
+  border: 2px solid #555555;
+}
+
+.action {
+  height: 30px;
 }
 
 canvas {
   image-rendering: auto;
   display: block;
+}
+
+button {
+  margin: 5px 2.5px;
+}
+
+input[type="text"] {
+  margin: 5px 2.5px;
 }
